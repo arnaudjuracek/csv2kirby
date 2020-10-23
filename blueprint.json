@@ -56,5 +56,9 @@
     "document_3_title": "Titre du document n°3",
     "document_3_legend": "Légende du document n°3",
     "document_3_credits": "Crédits du document n°3"
-  }
+  },
+  "groupBy": [
+    "À quel prix Diplôme souhaitez-vous participer ?",
+    "À quel prix souhaitez-vous participer ?"
+  ]
 }

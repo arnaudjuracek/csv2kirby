@@ -6,6 +6,7 @@ const download = require('download')
 const spinners = require('./utils/spinners')(require('cli-spinners').line)
 const capitalize = require('capitalize')
 const { URL } = require('url')
+const slugify = require('slugify')
 
 const BLUEPRINT = require('./blueprint.json')
 
@@ -18,7 +19,7 @@ if (!input) {
 const OUTPUT_DIRECTORY = path.join(process.cwd(), output || 'content')
 const FIELD_SEPARATOR = '\n\n----\n\n'
 
-BLUEPRINT.files = BLUEPRINT.files.map(k => k.toUpperCase())
+BLUEPRINT.files = BLUEPRINT.files.map(key => key.toUpperCase())
 
 ;(async () => {
   try {
@@ -49,13 +50,20 @@ async function write (project) {
 
   const spinner = spinners.add(UID)
 
+  // Find sub-group
+  const group = BLUEPRINT.groupBy && [...BLUEPRINT.groupBy].map(key => {
+    return project[key.toUpperCase()]
+  }).filter(Boolean)[0]
+
   // Create directory
   spinner.log(`creating ${UID}`)
-  const dir = path.join(OUTPUT_DIRECTORY, UID)
+  const dir = group
+    ? path.join(OUTPUT_DIRECTORY, slugify(group.toLowerCase()), UID)
+    : path.join(OUTPUT_DIRECTORY, UID)
   await fs.ensureDir(dir)
 
   // Download and write attached files
-  const urls = BLUEPRINT.files.map(k => project[k]).filter(Boolean)
+  const urls = BLUEPRINT.files.map(key => project[key]).filter(Boolean)
   for (let index = 0; index < urls.length; index++) {
     const url = urls[index]
     spinner.log(`downloading files (${index + 1}/${urls.length})…`)
