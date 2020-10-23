@@ -1,0 +1,60 @@
+{
+  "name": "project.txt",
+  "files": [
+    "Photographie du candidat",
+    "Photocopie du diplôme ou attestation faisant foi de l’établissement",
+    "Photo n°1",
+    "Photo n°2",
+    "Photo n°3",
+    "Document graphique n°1",
+    "Document graphique n°2",
+    "Document graphique n°3"
+  ],
+  "fields": {
+    "submit_date": "Submit Date (UTC)",
+    "networkd_id": "Network ID",
+
+    "lastname": "Nom",
+    "firstname": "Prénom",
+    "structure": "Structure",
+    "email": "Adresse email",
+    "phone": "Numéro de téléphone",
+    "profile_picture": "Photographie du candidat",
+
+    "street": "N° et nom de la rue",
+    "zipcode": "Code postal",
+    "city": "Nom de la ville",
+
+    "category": "Sélection de la catégorie",
+
+    "picture_1": "Photo n°1",
+    "picture_1_title": "Titre de la photo n°1",
+    "picture_1_legend": "Légende de la photo n°1",
+    "picture_1_credits": "Crédits de la photo n°1",
+
+    "picture_2": "Photo n°2",
+    "picture_2_title": "Titre de la photo n°2",
+    "picture_2_legend": "Légende de la photo n°2",
+    "picture_2_credits": "Crédits de la photo n°2",
+
+    "picture_3": "Photo n°3",
+    "picture_3_title": "Titre de la photo n°3",
+    "picture_3_legend": "Légende de la photo n°3",
+    "picture_3_credits": "Crédits de la photo n°3",
+
+    "document_1": "Document graphique n°1",
+    "document_1_title": "Titre du document n°1",
+    "document_1_legend": "Légende du document n°1",
+    "document_1_credits": "Crédits du document n°1",
+
+    "document_2": "Document graphique n°2",
+    "document_2_title": "Titre du document n°2",
+    "document_2_legend": "Légende du document n°2",
+    "document_2_credits": "Crédits du document n°2",
+
+    "document_3": "Document graphique n°3",
+    "document_3_title": "Titre du document n°3",
+    "document_3_legend": "Légende du document n°3",
+    "document_3_credits": "Crédits du document n°3"
+  }
+}
