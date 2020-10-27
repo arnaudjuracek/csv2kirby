@@ -45,7 +45,7 @@ BLUEPRINT.files = BLUEPRINT.files.map(key => key.toUpperCase())
 })()
 
 async function write (project) {
-  const UID = project['#'] || project['Token']
+  const UID = project['#'] || project['TOKEN']
   if (!UID) return
 
   const spinner = spinners.add(UID)
