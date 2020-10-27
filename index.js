@@ -62,6 +62,12 @@ async function write (project) {
     : path.join(OUTPUT_DIRECTORY, UID)
   await fs.ensureDir(dir)
 
+  // If sub-group exists, create the group template file (its name is the
+  // plural of the blueprint name)
+  if (group) {
+    await fs.writeFile(path.join(dir, BLUEPRINT.name.replace('.txt', 's.txt')), `Title: ${group}`)
+  }
+
   // Download and write attached files
   const urls = BLUEPRINT.files.map(key => project[key]).filter(Boolean)
   for (let index = 0; index < urls.length; index++) {
