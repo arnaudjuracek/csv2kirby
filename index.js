@@ -4,7 +4,6 @@ const path = require('path')
 const { parse } = require('papaparse')
 const download = require('download')
 const spinners = require('./utils/spinners')(require('cli-spinners').line)
-const capitalize = require('capitalize')
 const { URL } = require('url')
 const slugify = require('slugify')
 
@@ -17,19 +16,13 @@ if (!input) {
 }
 
 const OUTPUT_DIRECTORY = path.join(process.cwd(), output || 'content')
-const FIELD_SEPARATOR = '\n\n----\n\n'
-
-BLUEPRINT.files = BLUEPRINT.files.map(key => key.toUpperCase())
 
 ;(async () => {
   try {
     // Parsing CSV
     const csv = path.join(process.cwd(), input)
     const raw = fs.readFileSync(csv, 'utf8')
-    const { data } = await parse(raw.trim(), {
-      header: true,
-      transformHeader: str => str.trim().toUpperCase()
-    })
+    const { data } = await parse(raw.trim(), { header: true })
 
     console.log(`Writing ${data.length} project${data.length > 1 ? 's' : ''} to ${OUTPUT_DIRECTORY}: \n`)
 
@@ -45,54 +38,64 @@ BLUEPRINT.files = BLUEPRINT.files.map(key => key.toUpperCase())
 })()
 
 async function write (project) {
-  const UID = project['#'] || project['TOKEN']
+  const UID = project['#'] || project['Token']
   if (!UID) return
 
+  const downloads = []
   const spinner = spinners.add(UID)
+  const groupName = BLUEPRINT.groupBy && [...BLUEPRINT.groupBy].map(key => project[key]).filter(Boolean)[0]
+  const groupDirectory = groupName && path.join(OUTPUT_DIRECTORY, slugify(groupName).toLowerCase())
+  const directory = path.join(groupDirectory || OUTPUT_DIRECTORY, UID)
 
-  // Find sub-group
-  const group = BLUEPRINT.groupBy && [...BLUEPRINT.groupBy].map(key => {
-    return project[key.toUpperCase()]
-  }).filter(Boolean)[0]
+  spinner.log(`preparing ${UID}…`)
 
-  // Create directory
-  spinner.log(`creating ${UID}`)
-  const dir = group
-    ? path.join(OUTPUT_DIRECTORY, slugify(group.toLowerCase()), UID)
-    : path.join(OUTPUT_DIRECTORY, UID)
-  await fs.ensureDir(dir)
+  let content = `Title: ${UID}\n\n----\n\nRaw:\n`
 
-  // If sub-group exists, create the group template file (its name is the
-  // plural of the blueprint name)
-  if (group) {
-    await fs.writeFile(path.join(dir, BLUEPRINT.name.replace('.txt', 's.txt')), `Title: ${group}`)
+  // Loop through all parsed columns
+  Object.entries(project).forEach(([label, value]) => {
+    const file = value && value.includes(BLUEPRINT.fileSource) && {
+      filename: `${downloads.length}_${path.basename(value)}`,
+      // Passing the url through the URL constructor to ensure correct URL
+      // encoding (escaped accentuated characters, etc…)
+      url: new URL(value).toString()
+    }
+
+    content += '\n'
+    content += YAMLStructureItem({ label, value: file ? file.filename : value })
+
+    if (file) downloads.push(file)
+  })
+
+  spinner.log(`creating ${UID}…`)
+
+  if (groupDirectory) {
+    await fs.ensureDir(groupDirectory)
+    await fs.writeFile(path.join(groupDirectory, BLUEPRINT.groupName), `Title: ${groupName}`)
   }
 
-  // Download and write attached files
-  const urls = BLUEPRINT.files.map(key => project[key]).filter(Boolean)
-  for (let index = 0; index < urls.length; index++) {
-    const url = urls[index]
-    spinner.log(`downloading files (${index + 1}/${urls.length})…`)
-    // Passing the url through the URL constructor to ensure correct URL
-    // encoding (escaped accentuated characters, etc…)
-    await download(new URL(url).toString(), dir, { filename: path.basename(url) })
-  }
+  await fs.ensureDir(directory)
 
-  // Write project file inside project directory
-  spinner.log('writing content…')
-  let content = `Title: ${UID}` + FIELD_SEPARATOR
-  for (let [ field, key ] of Object.entries(BLUEPRINT.fields)) {
-    key = key.toUpperCase()
-    const value = project[key]
-    const isFilePointer = value && BLUEPRINT.files.includes(key)
-    const isMultiline = value && value.split('\n').length > 1
+  spinner.log(`writing content…`)
 
-    content += capitalize(field) + ':'
-    content += isMultiline ? '\n\n' : ' '
-    content += isFilePointer ? path.basename(value) : value
-    content += FIELD_SEPARATOR
+  await fs.writeFile(path.join(directory, BLUEPRINT.name), content)
+
+  for (let index = 0; index < downloads.length; index++) {
+    const { filename, url } = downloads[index]
+    spinner.log(`downloading (${index + 1}/${downloads.length})…`)
+    await download(url, directory, { filename })
   }
-  await fs.writeFile(path.join(dir, BLUEPRINT.name), content, 'utf8')
 
   spinner.success('done.')
+}
+
+function YAMLStructureItem (o, { indentation = '  ', level = 1 } = {}) {
+  let content = '-'
+  Object.entries(o).forEach(([ key, value ]) => {
+    content += '\n'
+    content += indentation.repeat(level) + key + ': |\n'
+    if (!value) return
+    content += value.split('\n').map(line => indentation.repeat(level + 1) + line).join('\n')
+  })
+
+  return content
 }
