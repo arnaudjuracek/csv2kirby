@@ -1,6 +1,6 @@
 {
   "name": "csv2kirby",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate Kirby content from a CSV file",
   "bin": "bin/index.js",
   "dependencies": {
