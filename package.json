@@ -1,7 +1,7 @@
 {
-  "name": "ffp-csv2kirby",
+  "name": "csv2kirby",
   "version": "0.0.1",
-  "description": "Generate Kirby content from a Typeform CSV",
+  "description": "Generate Kirby content from a CSV",
   "main": "index.js",
   "dependencies": {
     "capitalize": "^2.0.3",
@@ -24,12 +24,12 @@
   "author": "Arnaud Juracek",
   "license": "MIT",
   "private": false,
-  "homepage": "https://github.com/chevalvert/ffp-csv2kirby#readme",
+  "homepage": "https://github.com/arnaudjuracek/csv2kirby#readme",
   "bugs": {
-    "url": "https://github.com/chevalvert/ffp-csv2kirby/issues"
+    "url": "https://github.com/arnaudjuracek/csv2kirby/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+git@github.com:chevalvert/ffp-csv2kirby.git"
+    "url": "git+git@github.com:arnaudjuracek/csv2kirby.git"
   }
 }

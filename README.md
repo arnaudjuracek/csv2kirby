@@ -1,19 +1,25 @@
-# `ffp-csv2kirby` [<img src="https://github.com/chevalvert.png?size=100" align="right">](http://chevalvert.fr/)
-> Generate Kirby content from a Typeform CSV
+# `csv2kirby`
+> Generate Kirby content from a CSV
 
 <br>
 
 ## Installation
 
-```console
-$ git clone https://github.com/chevalvert/ffp-csv2kirby
-$ cd ffp-csv2kirby && npm install
+```
+$ npm install --global arnaudjuracek/csv2kirby
 ```
 
 ## Usage
 
 ```console
-$ node ffp-csv2kirby <INPUT.csv> <CONTENT-DIRECTORY>
+$ csv2kirby <INPUT.csv> <CONTENT-DIRECTORY>
+```
+
+## Development
+
+```console
+$ git clone https://github.com/arnaudjuracek/csv2kirby
+$ cd csv2kirby && npm install
 ```
 
 ## License
