@@ -20,6 +20,7 @@ Usage:
   csv2kirby <input.csv> --publish
   csv2kirby <input.csv> --download '^http.*(png|jpe?g)$'
   csv2kirby <input.csv> --ignore '(index|pubdate)'
+  csv2kirby <input.csv> --raw '(index|pubdate)'
 
 Options:
   -h, --help       Show this screen
@@ -37,6 +38,9 @@ Options:
 
   --download       Define a regex which trigger a file download
   --ignore         Define a regex to ignore some column names
+  --raw            Define a regex to store some column in a raw field,
+                   referencing their name and the value of the corresponding
+                   line
 ```
 
 ## Development

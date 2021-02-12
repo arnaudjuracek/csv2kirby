@@ -12,7 +12,7 @@ const argv = require('minimist')(process.argv.slice(2), {
     b: 'blueprint'
   },
   boolean: ['help', 'porcelain', 'version', 'progress', 'publish'],
-  string: ['blueprint', 'download', 'output', 'array', 'ignore']
+  string: ['blueprint', 'download', 'output', 'array', 'ignore', 'raw']
 })
 
 if (argv.help) {
