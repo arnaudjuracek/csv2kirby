@@ -27,8 +27,10 @@ Options:
   -v, --version    Print the current version
 
   -o, --output     Define the output directory (default: CWD/content/)
+
   --progress       Log writing progress
-  --verbose        Print detailled informations, disable --progress
+  --verbose        Print detailed informations, disable --progress
+  --porcelain      Print parsable log, disable --progress and --verbose
 
   --blueprint      Define the name of the Kirby blueprint (default: 'page.txt')
   --title          Define the column used to get the mandatory page Title
@@ -42,7 +44,6 @@ Options:
   --raw            Define a regex to store some column in a raw field,
                    referencing their name and the value of the corresponding
                    line
-
 ```
 
 ## Development
