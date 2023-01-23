@@ -31,3 +31,7 @@ Options:
                    referencing their name and the value of the corresponding
                    line
 
+  --skipAlreadyDownloaded
+                   Do not attempt to re-download a file that already exists on
+                   disk when using the --download arg
+
